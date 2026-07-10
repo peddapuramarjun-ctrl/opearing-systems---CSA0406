@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+#define SIZE 5
+
+int buffer[SIZE], front = 0, rear = -1, count = 0;
+
+void produce(int item) {
+    if (count == SIZE)
+        printf("Buffer Full!\n");
+    else {
+        rear = (rear + 1) % SIZE;
+        buffer[rear] = item;
+        count++;
+        printf("Produced: %d\n", item);
+    }
+}
+
+void consume() {
+    if (count == 0)
+        printf("Buffer Empty!\n");
+    else {
+        printf("Consumed: %d\n", buffer[front]);
+        front = (front + 1) % SIZE;
+        count--;
+    }
+}
+
+int main() {
+    produce(10);
+    produce(20);
+    produce(30);
+
+    consume();
+    consume();
+
+    produce(40);
+    produce(50);
+
+    return 0;
+}
