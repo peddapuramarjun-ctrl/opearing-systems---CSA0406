@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main()
+{
+    if (fork() == 0)
+        execl("/bin/ls", "ls", "-l", NULL);
+    else
+        wait(NULL);
+
+    return 0;
+}
