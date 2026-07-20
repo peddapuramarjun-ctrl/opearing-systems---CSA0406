@@ -1,0 +1,140 @@
+C01 - ASSESSMENT TOOL-1
+CSA0406 - OPERATING SYSTEM
+NAME : P.ARJUN
+REG NO : 192524194
+SLOT : A
+
+QUESTION (1)
+
+(a) Suitable Operating System
+A Multi-user, Multitasking Operating System (such as Linux) is the most suitable for this environment.
+Justification:
+It allows multiple users to log in and use the system simultaneously.
+It supports multitasking, enabling several programs from different users to execute concurrently.
+It efficiently shares system resources such as CPU, memory, and storage while ensuring security and process isolation.
+(b) Any Two Responsibilities of the Kernel
+Process Scheduling
+The kernel allocates CPU time to different processes using scheduling algorithms, ensuring fair and efficient execution.
+Memory Management
+The kernel allocates and deallocates memory for processes and provides memory protection so that one process cannot access another process's memory.
+(c) pseudo-code
+START
+Call fork() and store the returned value in pid
+IF pid < 0 THEN
+    Display "Process creation failed"
+ELSE IF pid == 0 THEN
+    Display "Child Process"
+    Display "Child PID = ", getpid()
+    Display "Parent PID = ", getppid()
+ELSE
+    Display "Parent Process"
+    Display "Parent PID = ", getpid()
+    Display "Child PID = ", pid
+END IF
+STOP
+
+QUESTION (2)
+
+(a)System Calls Required
+ (Operation)       (System Call)                                
+ 1.File creation   `open()` (with `O_CREAT` flag) or `creat()`
+ 2.File writing    `write()`                                  
+ 3.File reading    `read()`                                    
+ 4.File closing    `close()`                                  
+(b) Purpose of Any Two File Management System Calls
+open()
+Opens an existing file or creates a new file (when used with the O_CREAT flag) and returns a file descriptor.
+write()
+Writes data from a buffer to the specified file.
+(c) Pseudo-code
+START
+Open or create file "student.txt" for writing
+    fd = open("student.txt", CREATE + WRITE)
+IF file opened successfully THEN
+    Write "John" into the file using write(fd, "John")
+    Close the file using close(fd)
+ELSE
+    Display "File creation failed"
+END IF
+STOP
+
+QUESTION (3)
+
+(a) System Calls Required
+  (Operation)                     (System Call)                          
+ 1.Open source file               `open()`                              
+ 2.Create/Open destination file   `open()` (with `O_CREAT`) or `creat()`
+ 3.Read data                      `read()`                              
+ 4.Write data                     `write()`                              
+ 5.Close files                    `close()`                              
+(b) Purpose of Any Two System Calls
+1.read()
+Reads data from the source file into a memory buffer.
+2.write()
+Writes the data stored in the buffer to the destination file.
+(c) Pseudo-code
+START
+Open source file for reading
+Open/Create destination file for writing
+WHILE read(source, buffer) > 0 DO
+    write(destination, buffer)
+END WHILE
+Close source file
+Close destination file
+STOP
+
+QUESTION (4)
+
+(a) Purpose of fork() and exec() System Calls
+fork()
+Creates a new child process by duplicating the parent process.
+exec()
+Replaces the current process with a new program to execute.
+(b) Role of wait() System Call
+wait()
+Causes the parent process to wait until the child process finishes execution, preventing the creation of zombie processes and allowing the parent to continue only after the child terminates.
+(c) pseudo code
+START
+pid = fork()
+IF pid == 0 THEN
+    exec("new_program")
+ELSE
+    wait()
+    Display "Child process completed"
+END IF
+STOP
+
+QUESTION (5)
+
+(a) Importance of File Management in an Operating System
+File management is important because it:
+Organizes and stores data efficiently on secondary storage.
+Provides secure access to files through permissions.
+Enables users and programs to create, read, write, rename, and delete files.
+Manages storage space and ensures reliable data retrieval.
+(b) Purpose of open() and close() System Calls
+open()
+Opens an existing file (or creates one if required) and returns a file descriptor for file operations.
+close()
+Closes the opened file, releases the file descriptor, and frees associated system resources.
+(c) C-based System Call Sequence
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+int main() {
+    int fd;
+    char buffer[100];
+    int n;
+    fd = open("student.txt", O_RDONLY);
+    if (fd < 0) {
+        printf("Error opening file\n");
+        return 1;
+    }
+    n = read(fd, buffer, sizeof(buffer) - 1);
+    if (n > 0) {
+        buffer[n] = '\0';
+        printf("%s", buffer);
+    }
+    close(fd);
+    return 0;
+}
