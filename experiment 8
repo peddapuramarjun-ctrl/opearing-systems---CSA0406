@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+    int bt = 10, tq = 3;
+
+    while (bt > 0) {
+        if (bt > tq) {
+            printf("%d ", tq);
+            bt -= tq;
+        } else {
+            printf("%d", bt);
+            bt = 0;
+        }
+    }
+
+    return 0;
+}
