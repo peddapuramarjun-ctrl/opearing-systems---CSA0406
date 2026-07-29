@@ -1,0 +1,7 @@
+#include <stdio.h>
+
+int main() {
+    printf("Preemptive Priority Scheduling (Simulation)\n");
+    printf("Highest priority process executes first.\n");
+    return 0;
+}
