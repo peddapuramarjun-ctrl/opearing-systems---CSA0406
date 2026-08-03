@@ -1,0 +1,50 @@
+NAME  : PEDDAPURAM ARJUN
+REG N0: 192524194
+COURSE : OPERATING SYSTEMS
+COURSE CODE : CSA0406
+
+
+
+Q1. Deadlock Debugging 
+Deadlock Condition:
+P1 locks R1 and waits for R2.
+P2 locks R2 and waits for R1.
+Each process holds one resource while waiting for the other, creating a circular wait, which leads to a deadlock.
+Optimization:
+Enforce a fixed resource ordering.
+Both processes should acquire resources in the same order (e.g., always lock R1 first, then R2).
+This removes the circular wait condition without changing the process logic.
+
+Q2. CPU Utilization Problem 
+Cause:
+Processes repeatedly move between Ready and Waiting, indicating frequent I/O operations.
+The CPU stays idle while processes wait for I/O, resulting in only 30% CPU utilization.
+System-Level Optimization:
+Use asynchronous I/O or DMA to overlap I/O with CPU execution.
+Increase the degree of multiprogramming so another ready process can execute while one waits for I/O.
+This improves CPU utilization
+.
+Q3. Memory Bottleneck Debugging 
+Memory Issue:
+Frequent page faults occur because the large heap (150 MB) and 25 thread stacks (25 MB) cause poor memory locality and excessive paging.
+Constant page loading slows program execution (thrashing).
+Optimizations:
+Reduce memory usage by optimizing heap allocation and reusing memory.
+Reduce the number of threads or decrease stack size/use a thread pool to lower memory consumption and page faults. 
+
+Q4. Starvation Debugging 
+Root Cause:
+P5 is in Q3 (lowest priority).
+Continuous arrival of higher-priority processes in Q1 and Q2 prevents Q3 from getting CPU time.
+This causes starvation.
+Optimization:
+Apply aging by gradually increasing the priority of waiting processes.
+Alternatively, reserve CPU time periodically for lower-priority queues to ensure fairness.
+
+Q5. Context-Switch Overhead Debugging 
+Reason for High Context Switching:
+The 1 ms time quantum is shorter than the 2 ms average CPU burst, so threads are preempted before completing.
+Frequent I/O also causes many process state changes, increasing context switches.
+Optimizations:
+Increase the time quantum (e.g., 4–5 ms) to reduce unnecessary preemptions.
+Improve I/O handling (e.g., asynchronous I/O or batching I/O requests) to reduce blocking and context switches.
