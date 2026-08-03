@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main() {
+    printf("Reader 1 is Reading\n");
+    printf("Reader 2 is Reading\n");
+
+    printf("Writer is Writing\n");
+
+    printf("Reader 3 is Reading\n");
+
+    return 0;
+}
