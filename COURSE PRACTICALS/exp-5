@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main() {
+    int n, p[10], pr[10], t;
+
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        p[i] = i + 1;
+        scanf("%d", &pr[i]);
+    }
+
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++)
+            if (pr[i] > pr[j]) {
+                t = pr[i];
+                pr[i] = pr[j];
+                pr[j] = t;
+            }
+
+    for (int i = 0; i < n; i++)
+        printf("%d ", pr[i]);
+
+    return 0;
+}
