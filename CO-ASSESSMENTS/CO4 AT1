@@ -1,0 +1,313 @@
+ASSESSMENT TOOL1 - CO4
+NAME    : PEDDAPURAM ARJUN
+REG NO  : 192524194
+COURSE  : OPERATING SYSTEMS
+
+Q1
+#include <stdio.h>
+
+int main() {
+    int n, f, ch, a[100], i, j, count;
+
+    printf("Enter disk blocks: ");
+    scanf("%d", &n);
+    printf("Enter file size: ");
+    scanf("%d", &f);
+    printf("1.Contiguous 2.Linked 3.Indexed: ");
+    scanf("%d", &ch);
+
+    for(i=0;i<n;i++) a[i]=0;
+
+    if(ch==1) {
+        for(i=0;i<=n-f;i++) {
+            count=0;
+            for(j=i;j<i+f;j++)
+                if(a[j]==0) count++;
+            if(count==f) break;
+        }
+
+        if(i>n-f)
+            printf("Contiguous allocation failed\n");
+        else {
+            printf("Allocated: ");
+            for(j=i;j<i+f;j++) {
+                a[j]=1;
+                printf("%d ",j);
+            }
+        }
+    }
+    else if(ch==2) {
+        printf("Allocated: ");
+        count=0;
+        for(i=0;i<n && count<f;i++)
+            if(!a[i]) {
+                a[i]=1;
+                printf("%d ",i);
+                count++;
+            }
+    }
+    else if(ch==3) {
+        printf("Index block: 0\nData blocks: ");
+        for(i=1;i<=f;i++) {
+            a[i]=1;
+            printf("%d ",i);
+        }
+    }
+
+    return 0;
+}
+Enter total number of disk blocks: 20
+Enter file size (number of blocks): 5
+Enter allocation method:
+1. Contiguous
+2. Linked
+3. Indexed
+Choice: 1
+
+Allocated blocks: 0 1 2 3 4
+
+Q2.
+#include <stdio.h>
+
+int main() {
+    int b[100], n, r, i, x;
+
+    printf("Enter number of blocks: ");
+    scanf("%d",&n);
+
+    printf("Enter bitmap: ");
+    for(i=0;i<n;i++)
+        scanf("%d",&b[i]);
+
+    printf("Enter blocks required: ");
+    scanf("%d",&r);
+
+    printf("Allocated: ");
+    for(i=0;i<n && r>0;i++) {
+        if(b[i]==0) {
+            b[i]=1;
+            printf("%d ",i);
+            r--;
+        }
+    }
+
+    if(r>0)
+        printf("\nNot enough space");
+
+    printf("\nBitmap: ");
+    for(i=0;i<n;i++)
+        printf("%d ",b[i]);
+
+    printf("\nEnter block to deallocate: ");
+    scanf("%d",&x);
+
+    if(x>=0 && x<n)
+        b[x]=0;
+
+    printf("After deallocation: ");
+    for(i=0;i<n;i++)
+        printf("%d ",b[i]);
+
+    return 0;
+}
+Enter number of blocks: 8
+Enter bitmap: 1 0 0 1 0 1 0 0
+Enter blocks required: 3
+Allocated: 1 2 4
+Bitmap: 1 1 1 1 1 1 0 0
+Enter block to deallocate: 2
+After deallocation: 1 1 0 1 1 1 0 0
+
+Q3.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int a[50],v[50]={0},n,h,i,j,x,min,p,total;
+
+    printf("Enter number of requests: ");
+    scanf("%d",&n);
+
+    printf("Enter requests: ");
+    for(i=0;i<n;i++) scanf("%d",&a[i]);
+
+    printf("Enter head: ");
+    scanf("%d",&h);
+
+    /* FCFS */
+    x=h; total=0;
+    printf("\nFCFS: %d",h);
+    for(i=0;i<n;i++) {
+        total+=abs(x-a[i]);
+        x=a[i];
+        printf(" -> %d",x);
+    }
+    printf("\nSeek time = %d",total);
+
+    /* SSTF */
+    x=h; total=0;
+    printf("\nSSTF: %d",h);
+
+    for(i=0;i<n;i++) {
+        min=9999;
+        for(j=0;j<n;j++)
+            if(!v[j] && abs(x-a[j])<min) {
+                min=abs(x-a[j]);
+                p=j;
+            }
+
+        v[p]=1;
+        total+=min;
+        x=a[p];
+        printf(" -> %d",x);
+    }
+
+    printf("\nSeek time = %d",total);
+
+    return 0;
+}
+Enter number of requests: 5
+Enter requests: 98 183 37 122 14
+Enter head: 53
+
+FCFS: 53 -> 98 -> 183 -> 37 -> 122 -> 14
+Seek time = 469
+
+SSTF: 53 -> 37 -> 14 -> 98 -> 122 -> 183
+Seek time = 310
+
+Q4.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int a[50],n,h,size,i,j,t,total;
+    
+    printf("Enter disk size: ");
+    scanf("%d",&size);
+    printf("Enter requests: ");
+    scanf("%d",&n);
+
+    for(i=0;i<n;i++) scanf("%d",&a[i]);
+
+    printf("Enter head: ");
+    scanf("%d",&h);
+
+    /* Sort */
+    for(i=0;i<n-1;i++)
+        for(j=i+1;j<n;j++)
+            if(a[i]>a[j]) {
+                t=a[i]; a[i]=a[j]; a[j]=t;
+            }
+
+    /* LOOK - right direction */
+    total=0;
+    printf("\nLOOK: %d",h);
+
+    for(i=0;i<n;i++)
+        if(a[i]>=h) {
+            total+=abs(h-a[i]);
+            h=a[i];
+            printf(" -> %d",h);
+        }
+
+    for(i=n-1;i>=0;i--)
+        if(a[i]<h) {
+            total+=abs(h-a[i]);
+            h=a[i];
+            printf(" -> %d",h);
+        }
+
+    printf("\nLOOK movement = %d",total);
+
+    return 0;
+}
+Enter disk size: 200
+Enter requests: 98 183 37 122 14 124 65 67
+Enter head: 53
+
+LOOK: 53 -> 65 -> 67 -> 98 -> 122 -> 124 -> 183 -> 37 -> 14
+LOOK movement = 299
+
+Q5.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n,f,h,am,sm,i,j,x,min,p;
+    int b[100],v[100]={0};
+
+    printf("Enter disk size: ");
+    scanf("%d",&n);
+    printf("Enter file size: ");
+    scanf("%d",&f);
+    printf("Enter head: ");
+    scanf("%d",&h);
+
+    printf("1.Contiguous 2.Indexed: ");
+    scanf("%d",&am);
+    printf("1.FCFS 2.SSTF: ");
+    scanf("%d",&sm);
+
+    for(i=0;i<n;i++) b[i]=0;
+
+    printf("Allocated blocks: ");
+
+    if(am==1) {
+        for(i=0;i<=n-f;i++) {
+            for(j=i;j<i+f;j++)
+                if(b[j]) break;
+
+            if(j==i+f) break;
+        }
+
+        if(i>n-f) {
+            printf("Allocation failed");
+            return 0;
+        }
+
+        for(j=i;j<i+f;j++) {
+            b[j]=1;
+            printf("%d ",j);
+        }
+    }
+    else {
+        for(i=0;i<f;i++) {
+            b[i]=1;
+            printf("%d ",i);
+        }
+    }
+
+    printf("\nSeek sequence: %d",h);
+    x=h;
+
+    if(sm==1) {
+        for(i=0;i<f;i++) {
+            printf(" -> %d",i);
+            x=i;
+        }
+    }
+    else {
+        for(i=0;i<f;i++) {
+            min=9999;
+            for(j=0;j<f;j++)
+                if(!v[j] && abs(x-j)<min) {
+                    min=abs(x-j);
+                    p=j;
+                }
+            v[p]=1;
+            x=p;
+            printf(" -> %d",x);
+        }
+    }
+
+    return 0;
+}
+Enter disk size: 20
+Enter file size: 5
+Enter head: 10
+1.Contiguous 2.Indexed: 1
+1.FCFS 2.SSTF: 2
+
+Allocated blocks: 0 1 2 3 4
+Seek sequence: 10 -> 4 -> 3 -> 2 -> 1 -> 0
