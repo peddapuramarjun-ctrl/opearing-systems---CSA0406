@@ -1,0 +1,93 @@
+#include <stdio.h>
+
+void firstFit(int b[], int m, int p[], int n) {
+    int i, j, temp[20];
+
+    for(i=0;i<m;i++) temp[i]=b[i];
+
+    printf("\nFirst Fit:\n");
+
+    for(i=0;i<n;i++) {
+        for(j=0;j<m;j++) {
+            if(temp[j] >= p[i]) {
+                printf("P%d -> B%d\n",i+1,j+1);
+                temp[j] -= p[i];
+                break;
+            }
+        }
+        if(j==m)
+            printf("P%d -> Not Allocated\n",i+1);
+    }
+}
+
+void bestFit(int b[], int m, int p[], int n) {
+    int i,j,best,temp[20];
+
+    for(i=0;i<m;i++) temp[i]=b[i];
+
+    printf("\nBest Fit:\n");
+
+    for(i=0;i<n;i++) {
+        best=-1;
+
+        for(j=0;j<m;j++)
+            if(temp[j]>=p[i] &&
+              (best==-1 || temp[j]<temp[best]))
+                best=j;
+
+        if(best!=-1) {
+            printf("P%d -> B%d\n",i+1,best+1);
+            temp[best]-=p[i];
+        }
+        else
+            printf("P%d -> Not Allocated\n",i+1);
+    }
+}
+
+void worstFit(int b[], int m, int p[], int n) {
+    int i,j,worst,temp[20];
+
+    for(i=0;i<m;i++) temp[i]=b[i];
+
+    printf("\nWorst Fit:\n");
+
+    for(i=0;i<n;i++) {
+        worst=-1;
+
+        for(j=0;j<m;j++)
+            if(temp[j]>=p[i] &&
+              (worst==-1 || temp[j]>temp[worst]))
+                worst=j;
+
+        if(worst!=-1) {
+            printf("P%d -> B%d\n",i+1,worst+1);
+            temp[worst]-=p[i];
+        }
+        else
+            printf("P%d -> Not Allocated\n",i+1);
+    }
+}
+
+int main() {
+    int b[20],p[20],m,n,i;
+
+    printf("Enter number of blocks: ");
+    scanf("%d",&m);
+
+    printf("Enter block sizes:\n");
+    for(i=0;i<m;i++)
+        scanf("%d",&b[i]);
+
+    printf("Enter number of processes: ");
+    scanf("%d",&n);
+
+    printf("Enter process sizes:\n");
+    for(i=0;i<n;i++)
+        scanf("%d",&p[i]);
+
+    firstFit(b,m,p,n);
+    bestFit(b,m,p,n);
+    worstFit(b,m,p,n);
+
+    return 0;
+}
