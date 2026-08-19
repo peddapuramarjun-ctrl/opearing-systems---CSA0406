@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main() {
+    int fd;
+    char data[] = "UNIX File Management";
+
+    fd = open("sample.txt", O_CREAT | O_WRONLY, 0644);
+    if(fd < 0) {
+        perror("open");
+        return 1;
+    }
+
+    write(fd, data, sizeof(data)-1);
+    printf("File created and data written.\n");
+
+    close(fd);
+    printf("File closed.\n");
+
+    fd = open("sample.txt", O_RDONLY);
+    printf("File opened again.\n");
+
+    close(fd);
+    return 0;
+}
