@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main() {
+    int fd;
+    char data[] = "File management in UNIX";
+
+    fd = open("file.txt", O_CREAT | O_WRONLY, 0644);
+    write(fd, data, sizeof(data)-1);
+    close(fd);
+
+    printf("File created and written.\n");
+
+    fd = open("file.txt", O_RDONLY);
+    printf("File opened successfully.\n");
+    close(fd);
+
+    if(rename("file.txt","newfile.txt") == 0)
+        printf("File renamed successfully.\n");
+
+    if(remove("newfile.txt") == 0)
+        printf("File deleted successfully.\n");
+
+    return 0;
+}
