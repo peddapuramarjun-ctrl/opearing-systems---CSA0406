@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <dirent.h>
+
+int main() {
+    int fd;
+    struct stat st;
+    DIR *dir;
+    struct dirent *entry;
+
+    fd = open("sample.txt", O_CREAT | O_RDWR, 0644);
+
+    printf("File descriptor: %d\n", fd);
+    printf("Flags: %d\n", fcntl(fd, F_GETFL));
+
+    lseek(fd, 0, SEEK_END);
+    printf("File pointer moved to end.\n");
+
+    stat("sample.txt", &st);
+    printf("File size: %ld bytes\n", st.st_size);
+
+    dir = opendir(".");
+    printf("\nDirectory contents:\n");
+
+    while((entry = readdir(dir)) != NULL)
+        printf("%s\n", entry->d_name);
+
+    closedir(dir);
+    close(fd);
+
+    return 0;
+}
